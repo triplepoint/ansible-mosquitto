@@ -1,3 +1,4 @@
+import pytest
 from testinfra.utils.ansible_runner import AnsibleRunner
 
 testinfra_hosts = AnsibleRunner('.molecule/ansible_inventory').get_hosts('all')
@@ -13,21 +14,12 @@ def test_service_running(Service):
     assert service.is_running
 
 
-def test_socket_listening_ipv4_1883(Socket):
-    socket = Socket('tcp://0.0.0.0:1883')
-    assert socket.is_listening
-
-
-def test_socket_listening_ipv4_9001(Socket):
-    socket = Socket('tcp://0.0.0.0:9001')
-    assert socket.is_listening
-
-
-def test_socket_listening_ipv6_1883(Socket):
-    socket = Socket('tcp://:::1883')
-    assert socket.is_listening
-
-
-def test_socket_listening_ipv6_9001(Socket):
-    socket = Socket('tcp://:::9001')
+@pytest.mark.parametrize("socket_def", [
+    ('tcp://0.0.0.0:1883'),
+    ('tcp://0.0.0.0:9001'),
+    ('tcp://:::1883'),
+    ('tcp://:::9001'),
+])
+def test_listening_sockets(Socket, socket_def):
+    socket = Socket(socket_def)
     assert socket.is_listening
