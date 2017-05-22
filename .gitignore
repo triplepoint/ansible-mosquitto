@@ -1,0 +1,7 @@
+# Testing-related
+__pycache__
+/.cache
+/.molecule
+/.tox
+/*.retry
+/roles/*

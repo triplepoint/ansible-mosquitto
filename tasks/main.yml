@@ -1,0 +1,25 @@
+---
+- name: Ensure Docker-related python packages are present
+  pip: name=docker
+
+- name: Ensure the mosquitto directories are present
+  file: state=directory path="{{ item }}"
+  with_items:
+    - "/etc/mosquitto"
+    - "/opt/mosquitto/data"
+    - "/var/log/mosquitto"
+
+- name: Ensure the include Mosquitto configuration file is present
+  template: src=mosquitto.conf.j2 dest=/etc/mosquitto/mosquitto.conf
+
+- name: Ensure the Mosquitto Docker container is running
+  docker_container:
+    name: mosquitto
+    image: "eclipse-mosquitto:1.4.10"
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - "/etc/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf"
+      - "/opt/mosquitto/data:/mosquitto/data"
+      - "/var/log/mosquitto:/mosquitto/log"

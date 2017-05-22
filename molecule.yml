@@ -1,0 +1,25 @@
+---
+driver:
+  name: docker
+
+molecule:
+  ignore_paths:
+    - __pycache__
+    - .cache
+    - .git
+    - .molecule
+    - .tox
+    - .vagrant
+
+docker:
+  containers:
+    - name: ubuntu_16_04
+      image: triplepoint/ubuntu-systemd-16.04
+      image_version: latest
+      privileged: True
+    # - name: ubuntu_14_04
+    #   image: triplepoint/ubuntu-upstart-14.04
+    #   image_version: latest
+
+verifier:
+  name: testinfra
