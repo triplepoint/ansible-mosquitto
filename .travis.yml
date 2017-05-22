@@ -10,8 +10,8 @@ before_install:
   - sudo apt-get install -o Dpkg::Options::="--force-confold" --force-yes -y docker-engine
 
 install:
-  - pip install --upgrade ansible==2.3.* molecule docker testinfra ansible-lint
-  - ansible-galaxy install -r ansible_dependencies.yml --roles-path ./roles
+  - pip install -r test_python_dependencies.txt
+  - ansible-galaxy install -r test_ansible_dependencies.yml --roles-path ./roles
 
 script:
   - molecule test --driver docker
