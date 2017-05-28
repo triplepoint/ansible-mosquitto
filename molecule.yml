@@ -20,6 +20,7 @@ docker:
     - name: ubuntu_14_04
       image: triplepoint/ubuntu-upstart-14.04
       image_version: latest
+      privileged: True
 
 verifier:
   name: testinfra
