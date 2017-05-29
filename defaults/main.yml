@@ -5,7 +5,7 @@ mosquitto_cafile: /etc/letsencrypt/live/mqtt.example.com/chain.pem
 mosquitto_keyfile: /etc/letsencrypt/live/mqtt.example.com/privkey.pem
 mosquitto_enable_websockets: False
 mosquitto_users:
-  - name: admin1
+  - name: admin
     password: password1
   - name: admin2
     password: password2

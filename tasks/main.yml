@@ -11,17 +11,15 @@
 
 - name: Ensure the include Mosquitto configuration file is present
   template: src=mosquitto.conf.j2 dest=/etc/mosquitto/mosquitto.conf
+  register: _mosquitto_config_file_set
 
 - include: password_file.yml
-
-# TODO - we should restart the mosquitto container, when either
-# `_mosquitto_passwords_changed` is true, or `/etc/mosquitto/mosquitto.conf`
-# was modified above.
 
 - name: Ensure the Mosquitto Docker container is running
   docker_container:
     name: mosquitto
     image: "eclipse-mosquitto:{{ mosquitto_docker_version }}"
+    restart: "{{ _mosquitto_passwords_changed or _mosquitto_config_file_set.changed }}"
     restart_policy: always
     ports:
       - "1883:1883"
