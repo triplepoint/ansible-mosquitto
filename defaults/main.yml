@@ -1,1 +1,7 @@
 ---
+molecule_docker_version: "1.4.10"
+molecule_certfile: /etc/letsencrypt/live/mqtt.example.com/cert.pem
+molecule_cafile: /etc/letsencrypt/live/mqtt.example.com/chain.pem
+molecule_keyfile: /etc/letsencrypt/live/mqtt.example.com/privkey.pem
+molecule_enable_websockets: False
+molecule_users: []

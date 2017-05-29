@@ -12,15 +12,19 @@
 - name: Ensure the include Mosquitto configuration file is present
   template: src=mosquitto.conf.j2 dest=/etc/mosquitto/mosquitto.conf
 
+- include: password_file.yml
+
 - name: Ensure the Mosquitto Docker container is running
   docker_container:
     name: mosquitto
-    image: "eclipse-mosquitto:1.4.10"
+    image: "eclipse-mosquitto:{{ molecule_docker_version }}"
     restart_policy: always
     ports:
       - "1883:1883"
-      - "9001:9001"
+      - "8883:8883"
+      - "8083:8083"
     volumes:
       - "/etc/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf"
+      - "/etc/mosquitto/passwd:/mosquitto/config/passwd"
       - "/opt/mosquitto/data:/mosquitto/data"
       - "/var/log/mosquitto:/mosquitto/log"
