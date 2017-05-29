@@ -14,10 +14,14 @@
 
 - include: password_file.yml
 
+# TODO - we should restart the mosquitto container, when either
+# `_mosquitto_passwords_changed` is true, or `/etc/mosquitto/mosquitto.conf`
+# was modified above.
+
 - name: Ensure the Mosquitto Docker container is running
   docker_container:
     name: mosquitto
-    image: "eclipse-mosquitto:{{ molecule_docker_version }}"
+    image: "eclipse-mosquitto:{{ mosquitto_docker_version }}"
     restart_policy: always
     ports:
       - "1883:1883"

@@ -16,16 +16,16 @@ listener 1883 localhost
 
 # TLS MQTT (MQTTS) Listener
 listener 8883
-certfile {{ molecule_certfile }}
-cafile {{ molecule_cafile }}
-keyfile {{ molecule_keyfile }}
+certfile {{ mosquitto_certfile }}
+cafile {{ mosquitto_cafile }}
+keyfile {{ mosquitto_keyfile }}
 
 
 # TLS Websocket Listener
-{% if molecule_enable_websockets %}
+{% if mosquitto_enable_websockets %}
 listener 8083
 protocol websockets
-certfile {{ molecule_certfile }}
-cafile {{ molecule_cafile }}
-keyfile {{ molecule_keyfile }}
+certfile {{ mosquitto_certfile }}
+cafile {{ mosquitto_cafile }}
+keyfile {{ mosquitto_keyfile }}
 {% endif %}

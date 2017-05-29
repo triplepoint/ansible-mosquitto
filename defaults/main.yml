@@ -1,7 +1,13 @@
 ---
-molecule_docker_version: "1.4.10"
-molecule_certfile: /etc/letsencrypt/live/mqtt.example.com/cert.pem
-molecule_cafile: /etc/letsencrypt/live/mqtt.example.com/chain.pem
-molecule_keyfile: /etc/letsencrypt/live/mqtt.example.com/privkey.pem
-molecule_enable_websockets: False
-molecule_users: []
+mosquitto_docker_version: "1.4.10"
+mosquitto_certfile: /etc/letsencrypt/live/mqtt.example.com/cert.pem
+mosquitto_cafile: /etc/letsencrypt/live/mqtt.example.com/chain.pem
+mosquitto_keyfile: /etc/letsencrypt/live/mqtt.example.com/privkey.pem
+mosquitto_enable_websockets: False
+mosquitto_users:
+  - name: admin1
+    password: password1
+  - name: admin2
+    password: password2
+  - name: admin3
+    password: password3
