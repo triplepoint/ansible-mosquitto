@@ -3,11 +3,10 @@ galaxy_info:
   author: Jonathan Hanson
   description: The Mosquitto MQTT broker
   license: MIT
-  min_ansible_version: 2.2
+  min_ansible_version: 2.4
   platforms:
     - name: Ubuntu
       versions:
-        #- trusty
         - xenial
   galaxy_tags:
     - mqtt

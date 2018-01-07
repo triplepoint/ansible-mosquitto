@@ -5,7 +5,7 @@ Install and configure the Mosquitto MQTT broker.
 None.
 
 ## Role Variables
-None.
+See the comments in the [defaults config file](defaults/main.yml).
 
 ## Dependencies
 - `geerlingguy.docker`
