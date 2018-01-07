@@ -1,7 +1,8 @@
-# Testing-related
+.git
+*.py[cod]
+*.retry
 __pycache__
-/.cache
-/.molecule
-/.tox
-/*.retry
-/roles/*
+.cache/
+.molecule/
+.tox/
+.vagrant/

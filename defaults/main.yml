@@ -1,9 +1,16 @@
 ---
-mosquitto_docker_version: "1.4.10"
-mosquitto_certfile: /etc/letsencrypt/live/mqtt.example.com/cert.pem
+# The version of the mosquitto docker image to use.
+# see: https://hub.docker.com/r/library/eclipse-mosquitto/tags/
+mosquitto_docker_version: "1.4.12"
+
+# The SSL files necessary for SSL (MQTTS)
+mosquitto_use_ssl: False
 mosquitto_cafile: /etc/letsencrypt/live/mqtt.example.com/chain.pem
+mosquitto_certfile: /etc/letsencrypt/live/mqtt.example.com/cert.pem
 mosquitto_keyfile: /etc/letsencrypt/live/mqtt.example.com/privkey.pem
-mosquitto_enable_websockets: False
+
+# A list of users, each with a `name` and `password` field.
+# In practice, these values should obviously be stored protected.
 mosquitto_users:
   - name: admin
     password: password1
