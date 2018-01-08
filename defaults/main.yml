@@ -11,10 +11,6 @@ mosquitto_keyfile: ""
 
 # A list of users, each with a `name` and `password` field.
 # In practice, these values should obviously be stored protected.
-mosquitto_users:
-  - name: admin1
-    password: password1
-  - name: admin2
-    password: password2
-  - name: admin3
-    password: password3
+mosquitto_users: []
+#  - name: example_admin
+#    password: example_password
