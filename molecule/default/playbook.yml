@@ -3,7 +3,7 @@
   hosts: all
   vars:
     mosquitto_users:
-      - name: example_admin
-        password: example_password
+      - name: test_user
+        password: test_password
   roles:
     - role: ansible-mosquitto
