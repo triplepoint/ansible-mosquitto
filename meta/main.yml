@@ -11,5 +11,4 @@ galaxy_info:
   galaxy_tags:
     - mqtt
     - mosquitto
-dependencies:
-  - geerlingguy.docker
+dependencies: []

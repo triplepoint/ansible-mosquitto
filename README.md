@@ -2,13 +2,15 @@
 Install and configure the Mosquitto MQTT broker.
 
 ## Requirements
-None.
+While there's no explicit dependency roles, the target machine should be able to act as a Docker host.  The `geerlingguy.docker` is a suitable role for this.
+
+In addition, you'll likely need some solution for deploying and maintaining SSL certificates, which we're considering outside the scope of this role.
 
 ## Role Variables
 See the comments in the [defaults config file](defaults/main.yml).
 
 ## Dependencies
-- `geerlingguy.docker`
+None (see requirements above)
 
 ## Example Playbook
     - hosts: whatever
