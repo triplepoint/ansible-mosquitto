@@ -4,10 +4,15 @@
 mosquitto_docker_version: "1.4.12"
 
 # The SSL files necessary for SSL (MQTTS)
+# Note that the "filename" variables are just the file name, and not the path.
+# They are assumed to be in the directory set in mosquitto_certfiles_dir.
+# Doing it this way allows us to share that directory as a volume in the
+# Docker container.
 mosquitto_use_ssl: false
-mosquitto_cafile: ""
-mosquitto_certfile: ""
-mosquitto_keyfile: ""
+mosquitto_certfiles_dir: ""
+mosquitto_ca_filename: ""
+mosquitto_cert_filename: ""
+mosquitto_key_filename: ""
 
 # A list of users, each with a `name` and `password` field.
 # In practice, these values should obviously be stored protected.

@@ -21,9 +21,9 @@ port 1883
 # SSL/TLS MQTT (MQTTS) Listener
 listener 8883
 {% if mosquitto_use_ssl %}
-cafile {{ mosquitto_cafile }}
-certfile {{ mosquitto_certfile }}
-keyfile {{ mosquitto_keyfile }}
+cafile /mosquitto/certs/{{ mosquitto_ca_filename }}
+certfile /mosquitto/certs/{{ mosquitto_cert_filename }}
+keyfile /mosquitto/certs/{{ mosquitto_key_filename }}
 {% endif %}
 
 

@@ -30,6 +30,19 @@
   when: _mosquitto_passwords_changed
   no_log: True
 
+- name: Define the list of Docker volumes
+  set_fact:
+    _mosquitto_docker_volumes:
+      - "/etc/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf"
+      - "/opt/mosquitto/data:/mosquitto/data"
+      - "/var/log/mosquitto:/mosquitto/log"
+      - "/etc/mosquitto/passwd:/mosquitto/config/passwd"
+
+- name: Add the certificate file directory to the list of volumes, if necessary
+  set_fact:
+    _mosquitto_docker_volumes: "{{ _mosquitto_docker_volumes }} + [ '{{ mosquitto_certfiles_dir }}:/mosquitto/certs' ]"
+  when: mosquitto_use_ssl
+
 - name: Ensure the Mosquitto Docker container is running
   docker_container:
     name: mosquitto
@@ -39,8 +52,4 @@
     ports:
       - "1883:1883"
       - "8883:8883"
-    volumes:
-      - "/etc/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf"
-      - "/opt/mosquitto/data:/mosquitto/data"
-      - "/var/log/mosquitto:/mosquitto/log"
-      - "/etc/mosquitto/passwd:/mosquitto/config/passwd"
+    volumes: "{{ _mosquitto_docker_volumes }}"
