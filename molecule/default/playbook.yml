@@ -1,9 +1,5 @@
 ---
 - name: Converge
   hosts: all
-  vars:
-    mosquitto_users:
-      - name: test_user
-        password: test_password
   roles:
     - role: ansible-mosquitto

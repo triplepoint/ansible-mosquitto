@@ -9,18 +9,19 @@ driver:
 lint:
   name: yamllint
 platforms:
-  # - name: ubuntu_14_04
-  #   image: triplepoint/ubuntu-upstart-14.04
-  #   command: /sbin/init
   - name: ubuntu_16_04
     image: triplepoint/ubuntu-systemd-16.04
     privileged: True
     command: /sbin/init
 provisioner:
   name: ansible
-  config_options:
-    ssh_connection:
-      pipelining: True
+  inventory:
+    group_vars:
+      all:
+        mosquitto_users:
+          - name: test_user
+            password: test_password
+
   lint:
     name: ansible-lint
 scenario:
