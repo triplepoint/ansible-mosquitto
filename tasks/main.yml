@@ -43,3 +43,14 @@
   no_log: True
   when: _mosquitto_passwords_changed
   notify: restart mosquitto
+
+- name: ensure mosquitto is started
+  docker_container:
+    name: mosquitto
+    image: "eclipse-mosquitto:{{ mosquitto_docker_version }}"
+    state: started
+    restart_policy: always
+    ports:
+      - "1883:1883"
+      - "8883:8883"
+    volumes: "{{ _mosquitto_docker_volumes }}"
