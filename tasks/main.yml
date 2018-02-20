@@ -26,22 +26,24 @@
   template: src=mosquitto.conf.j2 dest=/etc/mosquitto/mosquitto.conf
   notify: restart mosquitto
 
-# Sets the `_mosquitto_passwords_changed` fact
-- import_tasks: password_change_detection.yml
+- import_tasks: _var_change_detection.yml
+  vars:
+    _change_detection_var_name: "mosquitto_users"
+    _change_detection_var: "{{ mosquitto_users }}"
 
 - name: Delete the existing password file
   file: path="/etc/mosquitto/passwd" state=absent
-  when: _mosquitto_passwords_changed
+  when: _change_detection_was_detected
 
 - name: Start with an empty password file
   file: path="/etc/mosquitto/passwd" state=touch
-  when: _mosquitto_passwords_changed
+  when: _change_detection_was_detected
 
 - name: Write the temporary password file contents
   command: "docker run --rm -v /etc/mosquitto/passwd:/mosquitto/config/passwd eclipse-mosquitto:{{ mosquitto_docker_version }} mosquitto_passwd -b /mosquitto/config/passwd {{ item.name }} {{ item.password }}"
   with_items: "{{ mosquitto_users }}"
   no_log: True
-  when: _mosquitto_passwords_changed
+  when: _change_detection_was_detected
   notify: restart mosquitto
 
 - name: ensure mosquitto is started

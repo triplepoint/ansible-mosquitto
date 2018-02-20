@@ -1,0 +1,45 @@
+---
+# This task snippet caches a hash of the given variable on the target, and then
+# determines if the current values have changed from the last cached value.
+# This allows arbitrary logic on "has this value changed since the last deploy"
+#
+# Example usage:
+# - import_tasks: _var_change_detection.yml
+#   vars:
+#     _change_detection_var_name: "some_var_under_test"
+#     _change_detection_var: "{{ some_var_under_test }}"
+#
+# The result will be a boolean set in `_change_detection_was_detected`.  Note
+# That repeated use of this snippet will overwrite this variable, so be sure
+# to save it out to a separate variable if you don't use it immediately.
+#
+# Of note, the hashed values are stored in `/var/cache/ansible_var_change_detection`,
+# and the filenames are stored as hashes of the variable name.
+
+- name: "VAR CHANGE DETECTION: Set the name of the variable's hash file"
+  set_fact: _change_detection_dir="/var/cache/ansible_var_change_detection"
+
+- name: "VAR CHANGE DETECTION: Set the name of the variable's hash file"
+  set_fact: _change_detection_file_name="{{ _change_detection_dir }}/{{ _change_detection_var_name }}"
+
+- name: "VAR CHANGE DETECTION: Ensure the hashing directory is present"
+  file: state=directory path="{{ _change_detection_dir }}" mode="0700"
+
+- name: "VAR CHANGE DETECTION: Generate a hash file of the given variable"
+  shell: "echo -n \"{{ _change_detection_var | to_json | hash('md5') }}  -\n\" > {{ _change_detection_file_name }}.new"
+  register: _change_detection_hash
+  changed_when: False
+  no_log: True
+
+- name: "VAR CHANGE DETECTION: Compare the hash to the hash of the last deploy"
+  command: "diff -q {{ _change_detection_file_name }}.new {{ _change_detection_file_name }}"
+  register: _change_detection_hashes_diff
+  changed_when: False
+  ignore_errors: True
+
+- name: "VAR CHANGE DETECTION: Rotate the hash 'current' hash file with to be the new one"
+  command: "mv {{ _change_detection_file_name }}.new {{ _change_detection_file_name }}"
+  changed_when: False
+
+- name: "VAR CHANGE DETECTION: Set the result variable flag indicating whether the variable has changed"
+  set_fact: _change_detection_was_detected="{{ _change_detection_hashes_diff.rc != 0 }}"
