@@ -19,3 +19,18 @@ mosquitto_key_filename: ""
 mosquitto_users: []
 #  - name: example_admin
 #    password: example_password
+
+# A list of bridge connections to other MQTT brokers, including the details of
+# how to connect and which topics to reveal.
+mosquitto_bridges: []
+#  - name: some_other_broker          # A named tag to identify this bridge
+#    addresses: ["example.com:1234"]
+#    remote_username: ""              # Optional
+#    remote_password: ""              # Optional
+#    remote_clientid: ""              # Optional, the client id to use to identify this host when connecting to the remote broker
+#    cafile: "/etc/ssl/certs/ca-certificates.crt"  # Optional, path to the remote broker's CA authority cert
+#    topic:
+#      name: "sometopic/"
+#      direction: ""                  # "out", "in", or "both"
+#      local_prefix: ""               # Optional
+#      remote_prefix: ""              # Optional

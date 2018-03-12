@@ -6,6 +6,7 @@
 ###################################################################
 
 # Storage and logging
+autosave_interval 1800
 persistence true
 persistence_location /mosquitto/data/
 log_dest file /mosquitto/log/mosquitto.log
@@ -26,6 +27,23 @@ certfile /mosquitto/certs/{{ mosquitto_cert_filename }}
 keyfile /mosquitto/certs/{{ mosquitto_key_filename }}
 {% endif %}
 
+# Bridge Configuration
+{% for bridge in mosquitto_bridges %}
+connection {{ bridge.name }}
+address {% for address in bridge.addresses %}{{address}} {% endfor %}
+
+topic {{ bridge.topic.name }} {{ bridge.topic.direction }} 2 {% if bridge.topic.local_prefix is defined %}{{ bridge.topic.local_prefix }}{% endif %} {% if bridge.topic.remote_prefix is defined %}{{ bridge.topic.remote_prefix }}{% endif %}
+
+{% if bridge.remote_username is defined %}remote_username {{ bridge.remote_username }}
+{% endif %}
+{% if bridge.remote_password is defined %}remote_password {{ bridge.remote_password }}
+{% endif %}
+{% if bridge.remote_clientid is defined %}remote_clientid {{ bridge.remote_clientid }}
+{% endif %}
+{% if bridge.cafile is defined %}bridge_cafile {{ bridge.cafile }}
+{% endif %}
+
+{% endfor %}
 
 
 

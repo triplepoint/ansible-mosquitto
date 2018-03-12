@@ -21,6 +21,19 @@ provisioner:
         mosquitto_users:
           - name: test_user
             password: test_password
+        mosquitto_bridges:
+          - name: test-broker
+            addresses: ["localhost:1883"]
+            remote_username: test_user
+            remote_password: test_password
+            remote_clientid: test_client_id
+            cafile: "/etc/ssl/certs/ca-certificates.crt"
+            topic:
+              name: "#"
+              direction: "in"
+              local_prefix: ""
+              remote_prefix: ""
+
 
   lint:
     name: ansible-lint

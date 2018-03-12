@@ -6,6 +6,7 @@
   set_fact:
     _mosquitto_docker_volumes:
       - "/etc/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf"
+      - "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro"
       - "/opt/mosquitto/data:/mosquitto/data"
       - "/var/log/mosquitto:/mosquitto/log"
       - "/etc/mosquitto/passwd:/mosquitto/config/passwd"
