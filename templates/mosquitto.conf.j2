@@ -15,10 +15,6 @@ log_dest file /mosquitto/log/mosquitto.log
 allow_anonymous false
 password_file /mosquitto/config/passwd
 
-# default listener should only listen on localhost
-bind_address 127.0.0.1
-port 1883
-
 # SSL/TLS MQTT (MQTTS) Listener
 listener 8883
 {% if mosquitto_use_ssl %}

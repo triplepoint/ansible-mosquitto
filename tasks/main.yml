@@ -54,6 +54,5 @@
     state: started
     restart_policy: always
     ports:
-      - "1883:1883"
       - "8883:8883"
     volumes: "{{ _mosquitto_docker_volumes }}"
