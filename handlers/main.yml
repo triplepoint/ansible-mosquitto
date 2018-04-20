@@ -6,6 +6,6 @@
     state: started
     restart: yes
     restart_policy: always
-    ports:
+    published_ports:
       - "8883:8883"
     volumes: "{{ _mosquitto_docker_volumes }}"
