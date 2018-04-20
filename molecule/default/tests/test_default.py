@@ -17,8 +17,6 @@ def test_docker_service_running(host):
 
 
 @pytest.mark.parametrize('socket_def', [
-    # listening on localhost, for tcp sockets on port 1883 (MQQT)
-    ('tcp://127.0.0.1:1883'),
     # all IPv4 tcp sockets on port 8883 (MQQTS)
     ('tcp://8883'),
 ])
