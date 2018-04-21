@@ -5,11 +5,10 @@
 - name: Define the list of Docker volumes, used when starting the docker container
   set_fact:
     _mosquitto_docker_volumes:
-      - "/etc/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf"
-      - "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro"
+      - "/etc/mosquitto:/mosquitto/config"
       - "/opt/mosquitto/data:/mosquitto/data"
       - "/var/log/mosquitto:/mosquitto/log"
-      - "/etc/mosquitto/passwd:/mosquitto/config/passwd"
+      - "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro"
 
 - name: Add the certificate file directory to the list of volumes, if necessary
   set_fact:
