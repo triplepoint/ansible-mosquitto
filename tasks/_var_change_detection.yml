@@ -28,18 +28,18 @@
 - name: "VAR CHANGE DETECTION: Generate a hash file of the given variable"
   shell: "echo -n \"{{ _change_detection_var | to_json | hash('md5') }}  -\n\" > {{ _change_detection_file_name }}.new"
   register: _change_detection_hash
-  changed_when: False
-  no_log: True
+  changed_when: false
+  no_log: true
 
 - name: "VAR CHANGE DETECTION: Compare the hash to the hash of the last deploy"
   command: "diff -q {{ _change_detection_file_name }}.new {{ _change_detection_file_name }}"
   register: _change_detection_hashes_diff
-  changed_when: False
-  ignore_errors: True
+  changed_when: false
+  ignore_errors: true
 
 - name: "VAR CHANGE DETECTION: Rotate the hash 'current' hash file with to be the new one"
   command: "mv {{ _change_detection_file_name }}.new {{ _change_detection_file_name }}"
-  changed_when: False
+  changed_when: false
 
 - name: "VAR CHANGE DETECTION: Set the result variable flag indicating whether the variable has changed"
   set_fact: _change_detection_was_detected="{{ _change_detection_hashes_diff.rc != 0 }}"

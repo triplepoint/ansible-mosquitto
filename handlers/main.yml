@@ -4,7 +4,7 @@
     name: mosquitto
     image: "eclipse-mosquitto:{{ mosquitto_docker_version }}"
     state: started
-    restart: yes
+    restart: true
     restart_policy: always
     published_ports:
       - "8883:8883"
