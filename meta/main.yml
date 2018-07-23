@@ -1,5 +1,6 @@
 ---
 galaxy_info:
+  role_name: mosquitto
   author: Jonathan Hanson
   description: The Mosquitto MQTT broker
   license: MIT
