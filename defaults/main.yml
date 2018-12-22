@@ -1,7 +1,7 @@
 ---
 # The version of the mosquitto docker image to use.
 # see: https://hub.docker.com/r/library/eclipse-mosquitto/tags/
-mosquitto_docker_version: "1.4.12"
+mosquitto_docker_version: "1.5.5"
 
 # The SSL files necessary for SSL (MQTTS)
 # Note that the "filename" variables are just the file name, and not the path.
