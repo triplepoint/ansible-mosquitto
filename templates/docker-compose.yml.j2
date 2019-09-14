@@ -1,0 +1,12 @@
+version: '3.7'
+services:
+  mosquitto:
+    image: eclipse-mosquitto:{{ mosquitto_docker_version }}
+    container_name: mosquitto
+    restart: always
+    ports:
+      - "8883:8883"
+    volumes:
+{% for vol in _mosquitto_docker_volumes %}
+      - {{ vol }}
+{% endfor %}

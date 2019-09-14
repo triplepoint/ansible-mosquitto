@@ -1,28 +1,18 @@
 ---
-- name: Ensure Docker-related python packages are present
-  pip: name=docker
+- name: Ensure Docker-related Python packages are present
+  pip:
+    name:
+      - docker
+      - docker-compose
 
-- name: Define the list of Docker volumes, used when starting the docker container
-  set_fact:
-    _mosquitto_docker_volumes:
-      - "/etc/mosquitto:/mosquitto/config"
-      - "/opt/mosquitto/data:/mosquitto/data"
-      - "/var/log/mosquitto:/mosquitto/log"
-      - "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro"
-
-- name: Add the certificate file directory to the list of volumes, if necessary
-  set_fact:
-    _mosquitto_docker_volumes: "{{ _mosquitto_docker_volumes }} + [ '{{ mosquitto_certfiles_dir }}:/mosquitto/certs' ]"
-  when: mosquitto_use_ssl
-
-- name: Ensure the mosquitto directories are present on the host
+- name: Ensure the service config directories are present on the host
   file: state=directory path="{{ item }}" mode=0777
   with_items:
     - "/etc/mosquitto"
     - "/opt/mosquitto/data"
     - "/var/log/mosquitto"
 
-- name: Ensure the include Mosquitto configuration file is present
+- name: Ensure the service configuration file is present
   template: src=mosquitto.conf.j2 dest=/etc/mosquitto/mosquitto.conf
   notify: restart mosquitto
 
@@ -46,12 +36,27 @@
   when: _change_detection_was_detected
   notify: restart mosquitto
 
-- name: ensure mosquitto is started
-  docker_container:
-    name: mosquitto
-    image: "eclipse-mosquitto:{{ mosquitto_docker_version }}"
-    state: started
-    restart_policy: always
-    published_ports:
-      - "8883:8883"
-    volumes: "{{ _mosquitto_docker_volumes }}"
+- name: Define the list of Docker volumes, used when starting the docker container
+  set_fact:
+    _mosquitto_docker_volumes:
+      - "/etc/mosquitto:/mosquitto/config"
+      - "/opt/mosquitto/data:/mosquitto/data"
+      - "/var/log/mosquitto:/mosquitto/log"
+      - "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro"
+
+- name: Add the certificate file directory to the list of volumes, if necessary
+  set_fact:
+    _mosquitto_docker_volumes: "{{ _mosquitto_docker_volumes }} + [ '{{ mosquitto_certfiles_dir }}:/mosquitto/certs' ]"
+  when: mosquitto_use_ssl
+
+- name: Ensure the docker-compose template directory exists
+  file: state=directory path="/opt/ansible-docker-compose/mosquitto"
+
+- name: Ensure this service's docker-compose template is present
+  template:
+    src: docker-compose.yml.j2
+    dest: /opt/ansible-docker-compose/mosquitto/docker-compose.yml
+
+- name: Ensure the service container(s) is/are started
+  docker_compose:
+    project_src: /opt/ansible-docker-compose/mosquitto

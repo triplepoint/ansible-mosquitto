@@ -1,11 +1,5 @@
 ---
 - name: restart mosquitto
-  docker_container:
-    name: mosquitto
-    image: "eclipse-mosquitto:{{ mosquitto_docker_version }}"
-    state: started
-    restart: true
-    restart_policy: always
-    published_ports:
-      - "8883:8883"
-    volumes: "{{ _mosquitto_docker_volumes }}"
+  docker_compose:
+    project_src: /opt/ansible-docker-compose/mosquitto
+    restarted: yes
