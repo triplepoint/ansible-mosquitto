@@ -5,6 +5,13 @@
       - docker
       - docker-compose
 
+- name: Ensure the Docker container image is up to date
+  docker_image:
+    name: eclipse-mosquitto
+    source: pull
+    tag: "{{ mosquitto_docker_version }}"
+  notify: restart mosquitto
+
 - name: Ensure the service config directories are present on the host
   file: state=directory path="{{ item }}" mode=0777
   with_items:
