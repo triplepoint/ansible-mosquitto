@@ -3,10 +3,35 @@ services:
   mosquitto:
     image: eclipse-mosquitto:{{ mosquitto_docker_version }}
     container_name: mosquitto
+{% if mosquitto_container_labels %}
+    labels:
+{% for label in mosquitto_container_labels %}
+      - {{ label }}
+{% endfor %}
+{% endif %}
     restart: always
     ports:
-      - "8883:8883"
+{% if mosquitto_use_ssl %}
+      - "8883"
+{% else %}
+      - "1883"
+{% endif %}
+{% if mosquitto_network_name %}
+    networks:
+      - {{ mosquitto_network_name }}
+{% endif %}
     volumes:
 {% for vol in _mosquitto_docker_volumes %}
       - {{ vol }}
 {% endfor %}
+{% if mosquitto_environment_variables %}
+    environment:
+{% for k, v in mosquitto_environment_variables.items() %}
+      - {{ k }}={{ v }}
+{% endfor %}
+{% endif %}
+{% if mosquitto_network_name %}
+networks:
+  {{ mosquitto_network_name }}:
+    external: true
+{% endif %}

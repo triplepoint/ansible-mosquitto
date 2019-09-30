@@ -34,3 +34,14 @@ mosquitto_bridges: []
 #      direction: ""                  # "out", "in", or "both"
 #      local_prefix: ""               # Optional
 #      remote_prefix: ""              # Optional
+
+# Labels to put on the application containers
+mosquitto_container_labels: []
+
+# If set to a string, the created Docker container will attach to a
+# pre-existing Docker network of that name, instead of creating its own.
+mosquitto_network_name: ""
+
+# A key/value set of environment variables and their values, which will be
+# set on the docker container.
+mosquitto_environment_variables: {}
