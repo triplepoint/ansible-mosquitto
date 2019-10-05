@@ -1,4 +1,4 @@
-# Ansible Mosquitto [![Build Status](https://travis-ci.org/triplepoint/ansible-mosquitto.svg?branch=master)](https://travis-ci.org/triplepoint/ansible-mosquitto)
+# Ansible Mosquitto
 Install and configure the Mosquitto MQTT broker.
 
 ## Requirements
