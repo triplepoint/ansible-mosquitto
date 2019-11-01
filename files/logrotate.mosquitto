@@ -1,0 +1,8 @@
+/var/log/mosquitto/mosquitto.log {
+  rotate 12
+  monthly
+  compress
+  delaycompress
+  missingok
+  notifempty
+}

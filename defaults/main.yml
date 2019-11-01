@@ -45,3 +45,6 @@ mosquitto_network_name: ""
 # A key/value set of environment variables and their values, which will be
 # set on the docker container.
 mosquitto_environment_variables: {}
+
+# Should we set up a logrotate config file for /var/log/mosquitto.log?
+mosquitto_enable_logrotate: true
