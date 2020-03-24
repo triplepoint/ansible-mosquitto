@@ -17,13 +17,18 @@
 # and the filenames are stored as hashes of the variable name.
 
 - name: "VAR CHANGE DETECTION: Set the name of the variable's hash file"
-  set_fact: _change_detection_dir="/var/cache/ansible_var_change_detection"
+  set_fact:
+    _change_detection_dir: "/var/cache/ansible_var_change_detection"
 
 - name: "VAR CHANGE DETECTION: Set the name of the variable's hash file"
-  set_fact: _change_detection_file_name="{{ _change_detection_dir }}/{{ _change_detection_var_name }}"
+  set_fact:
+    _change_detection_file_name: "{{ _change_detection_dir }}/{{ _change_detection_var_name }}"
 
 - name: "VAR CHANGE DETECTION: Ensure the hashing directory is present"
-  file: state=directory path="{{ _change_detection_dir }}" mode="0700"
+  file:
+    state: directory
+    path: "{{ _change_detection_dir }}"
+    mode: 0700
 
 - name: "VAR CHANGE DETECTION: Generate a hash file of the given variable"
   shell: "echo -n \"{{ _change_detection_var | to_json | hash('md5') }}  -\n\" > {{ _change_detection_file_name }}.new"
@@ -42,4 +47,5 @@
   changed_when: false
 
 - name: "VAR CHANGE DETECTION: Set the result variable flag indicating whether the variable has changed"
-  set_fact: _change_detection_was_detected="{{ _change_detection_hashes_diff.rc != 0 }}"
+  set_fact:
+    _change_detection_was_detected: "{{ _change_detection_hashes_diff.rc != 0 }}"

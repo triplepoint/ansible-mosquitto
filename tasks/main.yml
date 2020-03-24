@@ -6,14 +6,19 @@
       - docker-compose
 
 - name: Ensure the service config directories are present on the host
-  file: state=directory path="{{ item }}" mode=0777
+  file:
+    state: directory
+    path: "{{ item }}"
+    mode: 0777
   with_items:
     - "/etc/mosquitto"
     - "/opt/mosquitto/data"
     - "/var/log/mosquitto"
 
 - name: Ensure the service configuration file is present
-  template: src=mosquitto.conf.j2 dest=/etc/mosquitto/mosquitto.conf
+  template:
+    src: mosquitto.conf.j2
+    dest: /etc/mosquitto/mosquitto.conf
   notify: restart mosquitto
 
 - import_tasks: _var_change_detection.yml
@@ -22,11 +27,15 @@
     _change_detection_var: "{{ mosquitto_users }}"
 
 - name: Delete the existing password file
-  file: path="/etc/mosquitto/passwd" state=absent
+  file:
+    path: "/etc/mosquitto/passwd"
+    state: absent
   when: _change_detection_was_detected
 
 - name: Start with an empty password file
-  file: path="/etc/mosquitto/passwd" state=touch
+  file:
+    path: "/etc/mosquitto/passwd"
+    state: touch
   when: _change_detection_was_detected
 
 - name: Write the temporary password file contents
@@ -59,7 +68,9 @@
   when: mosquitto_enable_logrotate
 
 - name: Ensure the docker-compose template directory exists
-  file: state=directory path="/opt/ansible-docker-compose/mosquitto"
+  file:
+    state: directory
+    path: "/opt/ansible-docker-compose/mosquitto"
 
 - name: Ensure this service's docker-compose template is present
   template:
