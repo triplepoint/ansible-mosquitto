@@ -64,7 +64,7 @@
   copy:
     src: logrotate.mosquitto
     dest: "/etc/logrotate.d/mosquitto"
-    mode: '0644'
+    mode: 0644
   when: mosquitto_enable_logrotate
 
 - name: Ensure the docker-compose template directory exists
