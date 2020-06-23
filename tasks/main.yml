@@ -5,11 +5,25 @@
       - docker
       - docker-compose
 
+- name: Ensure the container user group exists
+  group:
+    name: "mosquitto"
+    gid: 1883
+    state: present
+
+- name: Ensure the container user exists
+  user:
+    name: "mosquitto"
+    uid: 1883
+    group: "mosquitto"
+
 - name: Ensure the service config directories are present on the host
   file:
     state: directory
     path: "{{ item }}"
-    mode: 0777
+    mode: 0750
+    owner: "mosquitto"
+    group: "mosquitto"
   with_items:
     - "/etc/mosquitto"
     - "/opt/mosquitto/data"
@@ -19,6 +33,9 @@
   template:
     src: mosquitto.conf.j2
     dest: /etc/mosquitto/mosquitto.conf
+    mode: 0640
+    owner: "mosquitto"
+    group: "mosquitto"
   notify: restart mosquitto
 
 - import_tasks: _var_change_detection.yml
@@ -36,6 +53,9 @@
   file:
     path: "/etc/mosquitto/passwd"
     state: touch
+    mode: 0640
+    owner: "mosquitto"
+    group: "mosquitto"
   when: _change_detection_was_detected
 
 - name: Write the temporary password file contents
