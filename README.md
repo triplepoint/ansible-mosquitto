@@ -6,6 +6,8 @@ While there's no explicit dependency roles, the target machine should be able to
 
 In addition, you'll potentially need some solution for deploying and maintaining SSL certificates, which we're considering outside the scope of this role.
 
+Finally, this role will create a user and group named `mosquitto` on the host, with gid and uid 1883.  This user/group will own all the directories and files that are shared into the service container.  This is hardcoded in the Eclipse Docker images, so there's not a lot of flexiblity available.
+
 ## Role Variables
 See the [comment in the default variables file](defaults/main.yml) for information on configuration.
 
