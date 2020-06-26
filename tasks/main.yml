@@ -8,14 +8,19 @@
 - name: Ensure the container user group exists
   group:
     name: "mosquitto"
-    gid: 1883
     state: present
+    gid: 1883
+    system: yes
 
 - name: Ensure the container user exists
   user:
     name: "mosquitto"
+    state: present
     uid: 1883
     group: "mosquitto"
+    create_home: no
+    system: yes
+    shell: "/usr/sbin/nologin"
 
 - name: Ensure the service config directories are present on the host
   file:
