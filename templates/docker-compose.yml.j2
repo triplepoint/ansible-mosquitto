@@ -20,10 +20,12 @@ services:
     networks:
       - {{ mosquitto_network_name }}
 {% endif %}
+{% if _mosquitto_docker_volumes %}
     volumes:
 {% for vol in _mosquitto_docker_volumes %}
       - {{ vol }}
 {% endfor %}
+{% endif %}
 {% if mosquitto_environment_variables %}
     environment:
 {% for k, v in mosquitto_environment_variables.items() %}
