@@ -5,4 +5,6 @@
   delaycompress
   missingok
   notifempty
+  postrotate
+    /usr/bin/docker kill --signal=HUP mosquitto > /dev/null 2> /dev/null || true
 }
