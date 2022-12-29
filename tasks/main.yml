@@ -1,13 +1,13 @@
 ---
 - name: Ensure the container user group exists
-  group:
+  ansible.builtin.group:
     name: "mosquitto"
     state: present
     gid: 1883
     system: true
 
 - name: Ensure the container user exists
-  user:
+  ansible.builtin.user:
     name: "mosquitto"
     state: present
     uid: 1883
@@ -17,7 +17,7 @@
     shell: "/usr/sbin/nologin"
 
 - name: Ensure the service config directories are present on the host
-  file:
+  ansible.builtin.file:
     state: directory
     path: "{{ item }}"
     mode: 0750
@@ -29,27 +29,28 @@
     - "/var/log/mosquitto"
 
 - name: Ensure the service configuration file is present
-  template:
+  ansible.builtin.template:
     src: mosquitto.conf.j2
     dest: /etc/mosquitto/mosquitto.conf
     mode: 0640
     owner: "mosquitto"
     group: "mosquitto"
-  notify: restart mosquitto
+  notify: Restart mosquitto
 
-- import_tasks: _var_change_detection.yml
+- name: Detect any changes in the users config since the last deploy
+  ansible.builtin.import_tasks: _var_change_detection.yml
   vars:
     _change_detection_var_name: "mosquitto_users"
     _change_detection_var: "{{ mosquitto_users }}"
 
 - name: Delete the existing password file
-  file:
+  ansible.builtin.file:
     path: "/etc/mosquitto/passwd"
     state: absent
   when: _change_detection_was_detected
 
 - name: Start with an empty password file
-  file:
+  ansible.builtin.file:
     path: "/etc/mosquitto/passwd"
     state: touch
     mode: 0640
@@ -58,16 +59,16 @@
   when: _change_detection_was_detected
 
 - name: Write the temporary password file contents
-  command: "docker run --rm -v /etc/mosquitto/passwd:/mosquitto/config/passwd \
+  ansible.builtin.command: "docker run --rm -v /etc/mosquitto/passwd:/mosquitto/config/passwd \
     eclipse-mosquitto:{{ mosquitto_docker_version }} mosquitto_passwd \
     -b /mosquitto/config/passwd {{ item.name }} {{ item.password }}"
   with_items: "{{ mosquitto_users }}"
   no_log: true
   when: _change_detection_was_detected
-  notify: restart mosquitto
+  notify: Restart mosquitto
 
 - name: Define the list of Docker volumes, used when starting the docker container
-  set_fact:
+  ansible.builtin.set_fact:
     _mosquitto_docker_volumes:
       - "/etc/mosquitto:/mosquitto/config"
       - "/opt/mosquitto/data:/mosquitto/data"
@@ -75,25 +76,25 @@
       - "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro"
 
 - name: Add the certificate file directory to the list of volumes, if necessary
-  set_fact:
+  ansible.builtin.set_fact:
     _mosquitto_docker_volumes: "{{ _mosquitto_docker_volumes | union(['{{ mosquitto_certfiles_dir }}:/mosquitto/certs']) }}"
   when: mosquitto_use_ssl
 
 - name: Ensure logrotate is aware of the mosquitto log file
-  copy:
+  ansible.builtin.copy:
     src: logrotate.mosquitto
     dest: "/etc/logrotate.d/mosquitto"
     mode: 0644
   when: mosquitto_enable_logrotate
 
 - name: Ensure the docker-compose template directory exists
-  file:
+  ansible.builtin.file:
     state: directory
     path: "/opt/ansible-docker-compose/mosquitto"
     mode: 0755
 
 - name: Ensure this service's docker-compose template is present
-  template:
+  ansible.builtin.template:
     src: docker-compose.yml.j2
     dest: /opt/ansible-docker-compose/mosquitto/docker-compose.yml
     mode: 0644

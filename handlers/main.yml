@@ -1,5 +1,5 @@
 ---
-- name: restart mosquitto
+- name: Restart mosquitto
   docker_compose:
     project_src: /opt/ansible-docker-compose/mosquitto
     restarted: true
