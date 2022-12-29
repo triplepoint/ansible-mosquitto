@@ -100,6 +100,6 @@
     mode: 0644
 
 - name: Ensure the service container(s) is/are started
-  docker_compose:
+  community.docker.docker_compose:
     project_src: /opt/ansible-docker-compose/mosquitto
     pull: true
