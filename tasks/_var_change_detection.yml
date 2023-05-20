@@ -41,7 +41,7 @@
   ansible.builtin.command: "diff -q {{ _change_detection_file_name }}.new {{ _change_detection_file_name }}"
   register: _change_detection_hashes_diff
   changed_when: false
-  ignore_errors: true
+  failed_when: _change_detection_hashes_diff.rc|int not in (0, 1)
 
 - name: "VAR CHANGE DETECTION: Rotate the hash 'current' hash file with to be the new one"
   ansible.builtin.command: "mv {{ _change_detection_file_name }}.new {{ _change_detection_file_name }}"
